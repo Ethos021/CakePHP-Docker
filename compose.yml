@@ -1,0 +1,27 @@
+services:
+  webserver:
+    build: . #Build from root
+    user: 1000:1000
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 8080:80 #This is where the CakePHP appliation will be loaded
+  mariadb: #This is to use MariaDB in your CakePHP application, rather than using phpmyadmin
+    image: mariadb:11.1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: #Add database name here
+      MYSQL_USER: #Add database username here
+      MYSQL_PASSWORD: #Add database user password here
+    volumes:
+      - mariadb:/var/lib/mysql
+  phpmyadmin: #This is to use the standard phpmyadmin in your CakePHP application
+    image: phpmyadmin:5.2.1
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: #Add database username here
+      PMA_PASSWORD: #Add database user password here
+    ports:
+      - 8081:80 #This is where phpmyadmin will be loaded
+volumes:
+  mariadb:
